@@ -3,13 +3,19 @@ const cheerio = require("cheerio");
 
 let wordsData = [];
 
-const fetchDefs = async () => {
+const fetchDefs = (term) => {
   wordsData = [];
-  const term = "ಹೇಸ";
+  // const term = "ಹೇಸ";
+  console.log(term);
   return fetch(encodeURI(`https://alar.ink/dictionary/kannada/english/${term}`))
     .then((res) => res.text())
     .then((body) => getData(body))
-    .then((data) => data);
+    .then((data) => {
+      if(data.length ===0){
+        return {"error" :"No defination found, try with Kannada alphabets "}
+      }
+      return data;
+    });
 };
 
 const getData = async (body) => {
