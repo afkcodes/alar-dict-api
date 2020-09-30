@@ -7,7 +7,7 @@ Example: https://alar-api.herokuapp.com/def/ಹೇಸು
 
 Currently only supports kannada alphabets,
 
-#TODO
+# TODO
 Auto suggestions endpoint
 
 
