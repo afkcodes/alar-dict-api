@@ -1,14 +1,15 @@
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 
-const words = [];
+let wordsData = [];
 
 const fetchDefs = async () => {
+  wordsData = [];
   const term = "ಹೇಸ";
   return fetch(encodeURI(`https://alar.ink/dictionary/kannada/english/${term}`))
     .then((res) => res.text())
     .then((body) => getData(body))
-    // .then((data) => data);
+    .then((data) => data);
 };
 
 const getData = async (body) => {
@@ -16,7 +17,7 @@ const getData = async (body) => {
   const heading = Array.from($("li.entry"));
   const defs = Array.from($(".defs"));
   return await getheading(heading).then(() => {
-    await getDefs(defs);
+    return getDefs(defs);
   });
   // await getheading();
 };
@@ -29,7 +30,7 @@ const getheading = async (heading) => {
     const title = $(el).find(".title").first().text().trim();
     const pronun = $(el).find(".pronun").first().text().trim();
     const type = $(el).find(".types").first().text().trim();
-    words.push({
+    wordsData.push({
       id,
       title,
       pronun,
@@ -53,11 +54,11 @@ const getDefs = async (defs) => {
     definations.push({
       ...defObj,
     });
-    words[indexmain].definations = definations;
+    wordsData[indexmain].definations = definations;
     definations = [];
     defObj = {};
   });
-  return words;
+  return wordsData;
   // console.log(JSON.stringify(words, null, 2));
 };
 
